@@ -1,0 +1,139 @@
+2-Config { log: StdErrLog { verbosity: Trace, quiet: false, show_level: true, timestamp: Millisecond, modules: [], writer: "stderr", color_choice: Never }, network_type: Regtest, db_path: "/data/electrs_bitcoin_db/regtest/regtest", daemon_dir: "/data/bitcoin/regtest", blocks_dir: "/data/bitcoin/regtest/blocks", daemon_rpc_addr: 127.0.0.1:18443, cookie: Some("alice:password"), electrum_rpc_addr: 0.0.0.0:50001, http_addr: 127.0.0.1:3000, http_socket_file: Some("/var/electrs-rest.sock"), monitoring_addr: 0.0.0.0:4224, jsonrpc_import: false, light_mode: false, address_search: true, index_unspendables: false, cors: None, precache_scripts: None, utxos_limit: 500, electrum_txs_limit: 100000, electrum_banner: "Welcome to electrs-esplora 0.4.1", electrum_public_hosts: None, electrum_announce: false, tor_proxy: Some(127.0.0.1:9050) }
+2-2025-02-16T07:45:47.566+00:00 - DEBUG - Server listening on 0.0.0.0:4224
+2-2025-02-16T07:45:47.566+00:00 - WARN - failed to connect daemon at 127.0.0.1:18443: Connection refused (os error 111)
+2-2025-02-16T07:45:47.579+00:00 - DEBUG - Running accept thread
+2-2025-02-16T07:45:50.576+00:00 - INFO - NetworkInfo { version: 240100, subversion: "/Satoshi:24.1.0/", relayfee: 1e-5 }
+2-2025-02-16T07:45:50.581+00:00 - INFO - BlockchainInfo { chain: "regtest", blocks: 100, headers: 100, bestblockhash: "547bb8e2600349a5d453053180650bfd6159db50e765f8086a475564358240a7", pruned: false, verificationprogress: 1.0, initialblockdownload: Some(false) }
+2-2025-02-16T07:45:50.585+00:00 - DEBUG - opening DB at "/data/electrs_bitcoin_db/regtest/regtest/newindex/txstore"
+2-2025-02-16T07:45:50.634+00:00 - DEBUG - 0 blocks were added
+2-2025-02-16T07:45:50.634+00:00 - DEBUG - opening DB at "/data/electrs_bitcoin_db/regtest/regtest/newindex/history"
+2-2025-02-16T07:45:50.665+00:00 - DEBUG - 0 blocks were indexed
+2-2025-02-16T07:45:50.665+00:00 - DEBUG - opening DB at "/data/electrs_bitcoin_db/regtest/regtest/newindex/cache"
+2-2025-02-16T07:45:50.697+00:00 - DEBUG - downloading all block headers up to 547bb8e2600349a5d453053180650bfd6159db50e765f8086a475564358240a7
+2-2025-02-16T07:45:50.698+00:00 - TRACE - downloading 101 block headers
+2-2025-02-16T07:45:50.817+00:00 - INFO - hash=547bb8e2600349a5d453053180650bfd6159db50e765f8086a475564358240a7 height=100 @ 2025-02-16T07:46:02Z (101 left to index)
+2-2025-02-16T07:45:50.817+00:00 - DEBUG - adding transactions from 101 blocks using BlkFiles
+2-2025-02-16T07:45:50.817+00:00 - DEBUG - listing block files at "/data/bitcoin/regtest/blocks/blk*.dat"
+2-2025-02-16T07:45:50.818+00:00 - TRACE - reading "/data/bitcoin/regtest/blocks/blk00000.dat"
+2-2025-02-16T07:45:50.949+00:00 - TRACE - parsing 16777216 bytes
+2-2025-02-16T07:45:50.965+00:00 - TRACE - fetched 101 blocks
+2-2025-02-16T07:45:50.967+00:00 - DEBUG - writing 707 rows to RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/txstore" }, flush=Disable
+2-2025-02-16T07:45:50.967+00:00 - DEBUG - starting full compaction on RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/txstore" }
+2-2025-02-16T07:45:50.978+00:00 - DEBUG - finished full compaction on RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/txstore" }
+2-2025-02-16T07:45:50.984+00:00 - DEBUG - indexing history from 101 blocks using BlkFiles
+2-2025-02-16T07:45:50.984+00:00 - DEBUG - listing block files at "/data/bitcoin/regtest/blocks/blk*.dat"
+2-2025-02-16T07:45:50.985+00:00 - TRACE - reading "/data/bitcoin/regtest/blocks/blk00000.dat"
+2-2025-02-16T07:45:51.005+00:00 - TRACE - parsing 16777216 bytes
+2-2025-02-16T07:45:51.019+00:00 - TRACE - fetched 101 blocks
+2-2025-02-16T07:45:51.021+00:00 - DEBUG - writing 302 rows to RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/history" }, flush=Disable
+2-2025-02-16T07:45:51.022+00:00 - DEBUG - starting full compaction on RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/history" }
+2-2025-02-16T07:45:51.029+00:00 - DEBUG - finished full compaction on RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/history" }
+2-2025-02-16T07:45:51.035+00:00 - DEBUG - flushing to disk
+2-2025-02-16T07:45:51.047+00:00 - DEBUG - updating synced tip to 547bb8e2600349a5d453053180650bfd6159db50e765f8086a475564358240a7
+2-2025-02-16T07:45:51.048+00:00 - DEBUG - applying 101 new headers from height 0
+2-2025-02-16T07:45:51.050+00:00 - INFO - Electrum RPC server running on 0.0.0.0:50001
+2-2025-02-16T07:45:51.050+00:00 - INFO - REST server running on unix socket /var/electrs-rest.sock
+2-2025-02-16T07:45:51.050+00:00 - TRACE - registering event source with poller: token=Token(0), interests=READABLE | WRITABLE
+2-2025-02-16T07:46:21.130+00:00 - DEBUG - downloading new block headers (101 already indexed) from 76ca7b7736c0a9a9d0132f16b1e6cdd4d356adf36f5823181ebc6836dab7784c
+2-2025-02-16T07:46:21.153+00:00 - TRACE - downloaded 22 block headers
+2-2025-02-16T07:46:21.154+00:00 - INFO - hash=76ca7b7736c0a9a9d0132f16b1e6cdd4d356adf36f5823181ebc6836dab7784c height=122 @ 2025-02-16T07:46:23Z (22 left to index)
+2-2025-02-16T07:46:21.154+00:00 - DEBUG - adding transactions from 22 blocks using Bitcoind
+2-2025-02-16T07:46:21.154+00:00 - DEBUG - hash=76ca7b7736c0a9a9d0132f16b1e6cdd4d356adf36f5823181ebc6836dab7784c height=122 @ 2025-02-16T07:46:23Z (22 left to index)
+2-2025-02-16T07:46:21.198+00:00 - DEBUG - writing 154 rows to RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/txstore" }, flush=Enable
+2-2025-02-16T07:46:21.207+00:00 - DEBUG - indexing history from 22 blocks using Bitcoind
+2-2025-02-16T07:46:21.207+00:00 - DEBUG - hash=76ca7b7736c0a9a9d0132f16b1e6cdd4d356adf36f5823181ebc6836dab7784c height=122 @ 2025-02-16T07:46:23Z (22 left to index)
+2-2025-02-16T07:46:21.248+00:00 - DEBUG - writing 66 rows to RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/history" }, flush=Enable
+2-2025-02-16T07:46:21.256+00:00 - DEBUG - updating synced tip to 76ca7b7736c0a9a9d0132f16b1e6cdd4d356adf36f5823181ebc6836dab7784c
+2-2025-02-16T07:46:21.256+00:00 - DEBUG - applying 22 new headers from height 101
+2-2025-02-16T07:46:26.274+00:00 - DEBUG - downloading new block headers (123 already indexed) from 05da83a1471ab1d67b4a1c4f3b599fb257eee1a698474203fbe0333b6b02724e
+2-2025-02-16T07:46:26.459+00:00 - TRACE - downloaded 96 block headers
+2-2025-02-16T07:46:26.459+00:00 - INFO - hash=05da83a1471ab1d67b4a1c4f3b599fb257eee1a698474203fbe0333b6b02724e height=218 @ 2025-02-16T07:46:39Z (96 left to index)
+2-2025-02-16T07:46:26.459+00:00 - DEBUG - adding transactions from 96 blocks using Bitcoind
+2-2025-02-16T07:46:26.459+00:00 - DEBUG - hash=05da83a1471ab1d67b4a1c4f3b599fb257eee1a698474203fbe0333b6b02724e height=218 @ 2025-02-16T07:46:39Z (96 left to index)
+2-2025-02-16T07:46:26.614+00:00 - DEBUG - writing 672 rows to RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/txstore" }, flush=Enable
+2-2025-02-16T07:46:26.626+00:00 - DEBUG - indexing history from 96 blocks using Bitcoind
+2-2025-02-16T07:46:26.626+00:00 - DEBUG - hash=05da83a1471ab1d67b4a1c4f3b599fb257eee1a698474203fbe0333b6b02724e height=218 @ 2025-02-16T07:46:39Z (96 left to index)
+2-2025-02-16T07:46:26.826+00:00 - DEBUG - writing 288 rows to RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/history" }, flush=Enable
+2-2025-02-16T07:46:26.836+00:00 - DEBUG - updating synced tip to 05da83a1471ab1d67b4a1c4f3b599fb257eee1a698474203fbe0333b6b02724e
+2-2025-02-16T07:46:26.837+00:00 - DEBUG - applying 96 new headers from height 123
+2-2025-02-16T07:46:31.840+00:00 - DEBUG - downloading new block headers (219 already indexed) from 3d60c43d03835e55f141b3ad68acf490f1ebc0f78ad32377db82d6be51a54961
+2-2025-02-16T07:46:31.941+00:00 - TRACE - downloaded 78 block headers
+2-2025-02-16T07:46:31.941+00:00 - INFO - hash=3d60c43d03835e55f141b3ad68acf490f1ebc0f78ad32377db82d6be51a54961 height=296 @ 2025-02-16T07:46:52Z (78 left to index)
+2-2025-02-16T07:46:31.941+00:00 - DEBUG - adding transactions from 78 blocks using Bitcoind
+2-2025-02-16T07:46:31.941+00:00 - DEBUG - hash=3d60c43d03835e55f141b3ad68acf490f1ebc0f78ad32377db82d6be51a54961 height=296 @ 2025-02-16T07:46:52Z (78 left to index)
+2-2025-02-16T07:46:32.065+00:00 - DEBUG - writing 602 rows to RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/txstore" }, flush=Enable
+2-2025-02-16T07:46:32.078+00:00 - DEBUG - indexing history from 78 blocks using Bitcoind
+2-2025-02-16T07:46:32.078+00:00 - DEBUG - hash=3d60c43d03835e55f141b3ad68acf490f1ebc0f78ad32377db82d6be51a54961 height=296 @ 2025-02-16T07:46:52Z (78 left to index)
+2-2025-02-16T07:46:32.191+00:00 - DEBUG - writing 318 rows to RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/history" }, flush=Enable
+2-2025-02-16T07:46:32.201+00:00 - DEBUG - updating synced tip to 3d60c43d03835e55f141b3ad68acf490f1ebc0f78ad32377db82d6be51a54961
+2-2025-02-16T07:46:32.202+00:00 - DEBUG - applying 78 new headers from height 219
+2-2025-02-16T07:46:37.209+00:00 - DEBUG - downloading new block headers (297 already indexed) from 30d53da02d29eb7b140b580f512105a6136f457fb875fde6c55929e4bb51229f
+2-2025-02-16T07:46:37.259+00:00 - TRACE - downloaded 43 block headers
+2-2025-02-16T07:46:37.259+00:00 - INFO - hash=30d53da02d29eb7b140b580f512105a6136f457fb875fde6c55929e4bb51229f height=339 @ 2025-02-16T07:46:59Z (43 left to index)
+2-2025-02-16T07:46:37.259+00:00 - DEBUG - adding transactions from 43 blocks using Bitcoind
+2-2025-02-16T07:46:37.259+00:00 - DEBUG - hash=30d53da02d29eb7b140b580f512105a6136f457fb875fde6c55929e4bb51229f height=339 @ 2025-02-16T07:46:59Z (43 left to index)
+2-2025-02-16T07:46:37.342+00:00 - DEBUG - writing 473 rows to RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/txstore" }, flush=Enable
+2-2025-02-16T07:46:37.350+00:00 - DEBUG - indexing history from 43 blocks using Bitcoind
+2-2025-02-16T07:46:37.350+00:00 - DEBUG - hash=30d53da02d29eb7b140b580f512105a6136f457fb875fde6c55929e4bb51229f height=339 @ 2025-02-16T07:46:59Z (43 left to index)
+2-2025-02-16T07:46:37.411+00:00 - DEBUG - writing 401 rows to RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/history" }, flush=Enable
+2-2025-02-16T07:46:37.420+00:00 - DEBUG - updating synced tip to 30d53da02d29eb7b140b580f512105a6136f457fb875fde6c55929e4bb51229f
+2-2025-02-16T07:46:37.421+00:00 - DEBUG - applying 43 new headers from height 297
+2-2025-02-16T07:46:42.428+00:00 - DEBUG - downloading new block headers (340 already indexed) from 2c372f648eff3c23b2d4c71923b65f6c2368e4e69ff491904fa816f0d827e948
+2-2025-02-16T07:46:42.498+00:00 - TRACE - downloaded 45 block headers
+2-2025-02-16T07:46:42.498+00:00 - INFO - hash=2c372f648eff3c23b2d4c71923b65f6c2368e4e69ff491904fa816f0d827e948 height=384 @ 2025-02-16T07:47:06Z (45 left to index)
+2-2025-02-16T07:46:42.498+00:00 - DEBUG - adding transactions from 45 blocks using Bitcoind
+2-2025-02-16T07:46:42.498+00:00 - DEBUG - hash=2c372f648eff3c23b2d4c71923b65f6c2368e4e69ff491904fa816f0d827e948 height=384 @ 2025-02-16T07:47:06Z (45 left to index)
+2-2025-02-16T07:46:42.554+00:00 - DEBUG - writing 491 rows to RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/txstore" }, flush=Enable
+2-2025-02-16T07:46:42.564+00:00 - DEBUG - indexing history from 45 blocks using Bitcoind
+2-2025-02-16T07:46:42.564+00:00 - DEBUG - hash=2c372f648eff3c23b2d4c71923b65f6c2368e4e69ff491904fa816f0d827e948 height=384 @ 2025-02-16T07:47:06Z (45 left to index)
+2-2025-02-16T07:46:42.621+00:00 - DEBUG - writing 411 rows to RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/history" }, flush=Enable
+2-2025-02-16T07:46:42.629+00:00 - DEBUG - updating synced tip to 2c372f648eff3c23b2d4c71923b65f6c2368e4e69ff491904fa816f0d827e948
+2-2025-02-16T07:46:42.630+00:00 - DEBUG - applying 45 new headers from height 340
+2-2025-02-16T07:46:47.635+00:00 - DEBUG - downloading new block headers (385 already indexed) from 7751a352b6c6eb663eed88ba06410f1a2674aa099add4978e82622e1aa1f2c82
+2-2025-02-16T07:46:47.871+00:00 - TRACE - downloaded 82 block headers
+2-2025-02-16T07:46:47.872+00:00 - INFO - hash=7751a352b6c6eb663eed88ba06410f1a2674aa099add4978e82622e1aa1f2c82 height=466 @ 2025-02-16T07:47:20Z (82 left to index)
+2-2025-02-16T07:46:47.872+00:00 - DEBUG - adding transactions from 82 blocks using Bitcoind
+2-2025-02-16T07:46:47.872+00:00 - DEBUG - hash=7751a352b6c6eb663eed88ba06410f1a2674aa099add4978e82622e1aa1f2c82 height=466 @ 2025-02-16T07:47:20Z (82 left to index)
+2-2025-02-16T07:46:47.960+00:00 - DEBUG - writing 690 rows to RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/txstore" }, flush=Enable
+2-2025-02-16T07:46:47.974+00:00 - DEBUG - indexing history from 82 blocks using Bitcoind
+2-2025-02-16T07:46:47.974+00:00 - DEBUG - hash=7751a352b6c6eb663eed88ba06410f1a2674aa099add4978e82622e1aa1f2c82 height=466 @ 2025-02-16T07:47:20Z (82 left to index)
+2-2025-02-16T07:46:48.130+00:00 - DEBUG - writing 450 rows to RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/history" }, flush=Enable
+2-2025-02-16T07:46:48.140+00:00 - DEBUG - updating synced tip to 7751a352b6c6eb663eed88ba06410f1a2674aa099add4978e82622e1aa1f2c82
+2-2025-02-16T07:46:48.140+00:00 - DEBUG - applying 82 new headers from height 385
+2-2025-02-16T07:46:53.157+00:00 - DEBUG - downloading new block headers (467 already indexed) from 285afa2a776ca14b3233931be857bdbd42ff199bc852c2cae87a39de1e994043
+2-2025-02-16T07:46:53.172+00:00 - TRACE - downloaded 6 block headers
+2-2025-02-16T07:46:53.172+00:00 - INFO - hash=285afa2a776ca14b3233931be857bdbd42ff199bc852c2cae87a39de1e994043 height=472 @ 2025-02-16T07:47:21Z (6 left to index)
+2-2025-02-16T07:46:53.172+00:00 - DEBUG - adding transactions from 6 blocks using Bitcoind
+2-2025-02-16T07:46:53.172+00:00 - DEBUG - hash=285afa2a776ca14b3233931be857bdbd42ff199bc852c2cae87a39de1e994043 height=472 @ 2025-02-16T07:47:21Z (6 left to index)
+2-2025-02-16T07:46:53.183+00:00 - DEBUG - writing 50 rows to RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/txstore" }, flush=Enable
+2-2025-02-16T07:46:53.196+00:00 - DEBUG - indexing history from 6 blocks using Bitcoind
+2-2025-02-16T07:46:53.196+00:00 - DEBUG - hash=285afa2a776ca14b3233931be857bdbd42ff199bc852c2cae87a39de1e994043 height=472 @ 2025-02-16T07:47:21Z (6 left to index)
+2-2025-02-16T07:46:53.204+00:00 - DEBUG - writing 30 rows to RocksDB { path: "/data/electrs_bitcoin_db/regtest/regtest/newindex/history" }, flush=Enable
+2-2025-02-16T07:46:53.212+00:00 - DEBUG - updating synced tip to 285afa2a776ca14b3233931be857bdbd42ff199bc852c2cae87a39de1e994043
+2-2025-02-16T07:46:53.213+00:00 - DEBUG - applying 6 new headers from height 467
+2-2025-02-16T07:47:03.578+00:00 - TRACE - registering event source with poller: token=Token(1), interests=READABLE | WRITABLE
+2-2025-02-16T07:47:03.589+00:00 - INFO - handle GET /blocks/
+2-2025-02-16T07:47:03.591+00:00 - TRACE - registering event source with poller: token=Token(2), interests=READABLE | WRITABLE
+2-2025-02-16T07:47:03.592+00:00 - INFO - handle GET /blocks/tip/height
+2-2025-02-16T07:47:23.303+00:00 - WARN - reconnecting to bitcoind: expected 109 bytes, got 12
+2-2025-02-16T07:47:23.681+00:00 - TRACE - stop accepting new RPCs
+2-2025-02-16T07:47:23.682+00:00 - TRACE - closing 0 RPC connections
+2-2025-02-16T07:47:23.682+00:00 - TRACE - RPC connections are closed
+2-2025-02-16T07:47:23.682+00:00 - TRACE - RPC server is stopped
+2-2025-02-16T07:47:23.682+00:00 - ERROR - server failed: Error: Iterrupted by signal 15
+2-   0: <unknown>
+2-   1: <unknown>
+2-   2: <unknown>
+2-   3: <unknown>
+2-   4: <unknown>
+2-   5: <unknown>
+2-   6: <unknown>
+2-   7: <unknown>
+2-   8: __libc_start_main
+2-   9: <unknown>
+2-
+2-
+2-2025-02-16T07:47:23.683+00:00 - TRACE - deregistering event source from poller
+2-2025-02-16T07:47:23.683+00:00 - TRACE - deregistering event source from poller
+2-2025-02-16T07:47:23.683+00:00 - TRACE - deregistering event source from poller
+2-pthread lock: Invalid argument

@@ -1,0 +1,21 @@
+services:
+  esplora:
+    image: blockstream/esplora
+#    platform: linux/amd64
+    environment:
+      ELECTRS_ARGS: --cookie alice:password
+      DEBUG: verbose
+    volumes:
+      - ./tmp-data:/data
+      - ./bitcoin-regtest-explorer.conf.in:/srv/explorer/source/contrib/bitcoin-regtest-explorer.conf.in
+    ports:
+      - '50001:50001'
+      - '8094:80'
+      - '18443:18443'
+    command: bash -c "/srv/explorer/run.sh bitcoin-regtest explorer"
+    healthcheck:
+      test: [ 'CMD', 'curl', '-f', 'http://localhost:80' ]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 40s
