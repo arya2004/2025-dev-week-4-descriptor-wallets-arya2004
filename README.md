@@ -1,4 +1,4 @@
-# Bitcoin Protocol Development - Week 5: Parsing a descriptor
+# Bitcoin Protocol Development - Week 4: Parsing a descriptor
 
 ## Overview
 In this challenge, you will generate addresses from a descriptor, and calculate the total balance of these addresses.
