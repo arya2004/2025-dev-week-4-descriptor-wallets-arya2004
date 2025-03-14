@@ -64,5 +64,7 @@ def main():
     with open("out.txt", "w") as f:
         f.write(f"{total_btc:.8f}")
 
+    print(f"Total Balance: {total_btc} BTC")
+
 if __name__ == "__main__":
     main()
