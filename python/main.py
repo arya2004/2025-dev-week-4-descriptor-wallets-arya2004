@@ -1,7 +1,7 @@
 import requests
 from bip_utils import Bip32Slip10Secp256k1, Bip32KeyNetVersions, P2WPKHAddr
 
-# The descriptor provided:
+# Descriptor containing the XPUB
 DESCRIPTOR = "wpkh(tpubD6NzVbkrYhZ4XgiXtGrdW5XDAPFCL9h7we1vwNCpn8tGbBcgfVYjXyhWo4E1xkh56hjod1RhGjxbaTLV3X4FyWuejifB9jusQ46QzG87VKp/*)#adv567t2"
 
 # Esplora API Base URL
@@ -23,10 +23,8 @@ def derive_address(xpub: str, index: int) -> str:
     try:
         child_key = bip32_ctx.ChildKey(index)
         pub_key_bytes = child_key.PublicKey().RawCompressed().ToBytes()
-        address = P2WPKHAddr.EncodeKey(pub_key_bytes, hrp="bcrt")  # "bcrt" for regtest
-        return address
-    except Exception as e:
-        print(f"Error deriving address at index {index}: {e}")
+        return P2WPKHAddr.EncodeKey(pub_key_bytes, hrp="bcrt")  # "bcrt" for regtest
+    except Exception:
         return None
 
 def get_utxos(address: str) -> list:
@@ -35,18 +33,8 @@ def get_utxos(address: str) -> list:
     try:
         response = requests.get(url, timeout=10)
         response.raise_for_status()
-        utxos = response.json()
-
-        # Debugging: Print API Response
-        print(f"Checking Address: {address}")
-        if utxos:
-            print(f"UTXOs: {utxos}")
-        else:
-            print(f"No UTXOs found for address {address}")
-
-        return utxos  # List of UTXO objects
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching UTXOs for {address}: {e}")
+        return response.json()  # List of UTXO objects
+    except requests.exceptions.RequestException:
         return []
 
 def main():
@@ -60,26 +48,21 @@ def main():
     while consecutive_empty < EMPTY_THRESHOLD:
         addr = derive_address(xpub, index)
         if addr is None:
-            print(f"Skipping index {index} due to address derivation failure.")
-            break
+            break  # Stop if address derivation fails
 
         utxos = get_utxos(addr)
         if utxos:
             consecutive_empty = 0  # Reset counter if UTXOs found
-            for utxo in utxos:
-                total_satoshis += utxo.get("value", 0)
+            total_satoshis += sum(utxo.get("value", 0) for utxo in utxos)
         else:
             consecutive_empty += 1
 
         index += 1
 
+    # Convert to BTC and save result
     total_btc = total_satoshis / 1e8
-    balance_str = f"{total_btc:.8f}"
-
     with open("out.txt", "w") as f:
-        f.write(balance_str)
-
-    print(f"Total Balance: {balance_str} BTC (saved to out.txt)")
+        f.write(f"{total_btc:.8f}")
 
 if __name__ == "__main__":
     main()
