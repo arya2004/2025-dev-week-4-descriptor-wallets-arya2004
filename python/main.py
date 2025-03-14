@@ -1,59 +1,85 @@
 import requests
-from bip_utils import Bip32Secp256k1, P2WPKHAddr
+from bip_utils import Bip32Slip10Secp256k1, Bip32KeyNetVersions, P2WPKHAddr
+
+# The descriptor provided:
+DESCRIPTOR = "wpkh(tpubD6NzVbkrYhZ4XgiXtGrdW5XDAPFCL9h7we1vwNCpn8tGbBcgfVYjXyhWo4E1xkh56hjod1RhGjxbaTLV3X4FyWuejifB9jusQ46QzG87VKp/*)#adv567t2"
+
+# Esplora API Base URL
+BASE_URL = "http://localhost:8094/regtest/api"
+
+def extract_xpub(descriptor: str) -> str:
+    """ Extract the XPUB from the descriptor """
+    start = descriptor.find("(")
+    end = descriptor.find("/*")
+    if start == -1 or end == -1:
+        raise ValueError("Invalid descriptor format")
+    return descriptor[start + 1 : end]
+
+def derive_address(xpub: str, index: int) -> str:
+    """ Derive a P2WPKH (SegWit) address from the XPUB at a given index """
+    key_net_ver = Bip32KeyNetVersions(b'\x04\x35\x87\xcf', b'\x04\x35\x83\x94')  # Testnet versions
+    bip32_ctx = Bip32Slip10Secp256k1.FromExtendedKey(xpub, key_net_ver=key_net_ver)
+    
+    try:
+        child_key = bip32_ctx.ChildKey(index)
+        pub_key_bytes = child_key.PublicKey().RawCompressed().ToBytes()
+        address = P2WPKHAddr.EncodeKey(pub_key_bytes, hrp="bcrt")  # "bcrt" for regtest
+        return address
+    except Exception as e:
+        print(f"Error deriving address at index {index}: {e}")
+        return None
+
+def get_utxos(address: str) -> list:
+    """ Fetch UTXOs for a given address using the Esplora API """
+    url = f"{BASE_URL}/address/{address}/utxo"
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        utxos = response.json()
+
+        # Debugging: Print API Response
+        print(f"Checking Address: {address}")
+        if utxos:
+            print(f"UTXOs: {utxos}")
+        else:
+            print(f"No UTXOs found for address {address}")
+
+        return utxos  # List of UTXO objects
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching UTXOs for {address}: {e}")
+        return []
 
 def main():
-    # descriptor
-    descriptor = "wpkh(tpubD6NzVbkrYhZ4XgiXtGrdW5XDAPFCL9h7we1vwNCpn8tGbBcgfVYjXyhWo4E1xkh56hjod1RhGjxbaTLV3X4FyWuejifB9jusQ46QzG87VKp/*)#adv567t2"
-    
- 
-    start = descriptor.find("wpkh(") + len("wpkh(")
-    end = descriptor.find("/*")
-
-    # Extract the xpub part from the descriptor.
-    xpub = descriptor[start:end]
-
-    # Human Readable Part
-    hrp = "bcrt"
-    
-    api_base = "http://localhost:8094/regtest/api"
+    """ Main function to calculate the total balance """
+    xpub = extract_xpub(DESCRIPTOR)
     total_satoshis = 0
-    gap_limit = 20  
+    index = 0
+    consecutive_empty = 0
+    EMPTY_THRESHOLD = 20  # Stop scanning after 20 empty addresses
 
-    # Create a Bip32 context from the extended public key (xpub) using the secp256k1 curve.
-    bip32_ctx = Bip32Secp256k1.FromExtendedKey(xpub)
-    
-    # Loop through each index from 0 to gap_limit-1 to derive child keys.
-    for i in range(gap_limit):
-    
-        child_node = bip32_ctx.DerivePath(str(i))
-        # Get the compressed public key bytes of the child node.
-        pub_key_bytes = child_node.PublicKey().RawCompressed().ToBytes()
-        # Generate a bech32 P2WPKH address (wpkh) using the HRP "bcrt"
-        address = P2WPKHAddr.EncodeKey(pub_key_bytes, hrp)
-        
-     
-        url = f"{api_base}/address/{address}"
-        try:
+    while consecutive_empty < EMPTY_THRESHOLD:
+        addr = derive_address(xpub, index)
+        if addr is None:
+            print(f"Skipping index {index} due to address derivation failure.")
+            break
 
-            response = requests.get(url)
-            if response.status_code == 200:
-                data = response.json()
-                chain_stats = data.get("chain_stats", {})
-                funded = chain_stats.get("funded_txo_sum", 0)
-                spent = chain_stats.get("spent_txo_sum", 0)
-                balance = funded - spent
-                total_satoshis += balance
-            else:
-                print(f"Failed to fetch data for address {address}: HTTP {response.status_code}")
-        except Exception as e:
+        utxos = get_utxos(addr)
+        if utxos:
+            consecutive_empty = 0  # Reset counter if UTXOs found
+            for utxo in utxos:
+                total_satoshis += utxo.get("value", 0)
+        else:
+            consecutive_empty += 1
 
-            print(f"Error fetching data for address {address}: {e}")
+        index += 1
 
     total_btc = total_satoshis / 1e8
+    balance_str = f"{total_btc:.8f}"
 
     with open("out.txt", "w") as f:
-        f.write(str(total_btc))
+        f.write(balance_str)
 
+    print(f"Total Balance: {balance_str} BTC (saved to out.txt)")
 
 if __name__ == "__main__":
     main()
